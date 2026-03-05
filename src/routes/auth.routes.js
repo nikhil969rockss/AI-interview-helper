@@ -17,4 +17,13 @@ authRoter.post("/register", controller.regiseterUserController);
  */
 authRoter.post("/login", controller.loginUserController);
 
+
+/**
+ * @route GET /api/auth/login
+ * @desc Logout the User, clear the cookie and  blacklisting the token
+ * @access Public
+ */
+authRoter.get("/logout", controller.logoutUserController)
+
+
 module.exports = authRoter;
