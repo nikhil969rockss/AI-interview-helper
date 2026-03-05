@@ -1,9 +1,62 @@
 import React from 'react'
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Input from '../components/Input';
+import Button from '../components/Button';
 
 const Register = () => {
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+      const [password, setPassword] = useState("");
+      const handleSubmit = (e) => {
+        e.preventDefault();
+      };
   return (
-    <div>Register</div>
-  )
+    <main className="flex-center min-h-screen">
+      <div className="max-w-135 min-w-85 border border-gray-600/30 p-6 rounded-md flex flex-col gap-6">
+        <h1 className="text-4xl font-bold">Register</h1>
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <Input
+            id={"username"}
+            placeholder="Enter your Username"
+            lable={"Username"}
+            required
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <Input
+            id={"email"}
+            inputType="email"
+            placeholder="Enter your Email"
+            lable={"Email"}
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            id={"password"}
+            inputType="password"
+            placeholder="Enter your Password"
+            lable={"Password"}
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button type="submit">Register</Button>
+        </form>
+        <p>
+          Already have an account?{" "}
+          <Link
+            className="text-[#9c7b95] font-semibold hover:underline"
+            to={"/login"}
+          >
+            Login
+          </Link>
+        </p>
+      </div>
+    </main>
+  );
 }
 
 export default Register
