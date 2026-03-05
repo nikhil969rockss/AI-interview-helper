@@ -18,13 +18,13 @@ const userSchema = new monogoose.Schema({
   password: {
     type: String,
     required: [true, "password is required"],
-    select:false
+    select: false,
   },
 });
 
 //hashing password before saving
 userSchema.pre("save", async function () {
-  if (!this.isModified("password")) return 
+  if (!this.isModified("password")) return;
   this.password = await bcrypt.hash(this.password, 12);
 });
 
@@ -35,4 +35,4 @@ userSchema.methods.comparePassword = async function (password) {
 
 const UserModel = monogoose.model("User", userSchema);
 
-module.exports = UserModel
+module.exports = UserModel;
