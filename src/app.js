@@ -1,11 +1,11 @@
 const express = require("express");
-const cookieParser = require('cookie-parser')
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
 //middlewares
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
 
 //Require all the routes here
 const authRouter = require("./routes/auth.routes");
