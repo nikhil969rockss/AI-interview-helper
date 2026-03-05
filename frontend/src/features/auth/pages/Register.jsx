@@ -13,7 +13,7 @@ const Register = () => {
       };
   return (
     <main className="flex-center min-h-screen">
-      <div className="max-w-135 min-w-85 border border-gray-600/30 p-6 rounded-md flex flex-col gap-6">
+      <div className="max-w-135 min-w-100 border border-gray-600/30 p-6 rounded-xl flex flex-col gap-6">
         <h1 className="text-4xl font-bold">Register</h1>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <Input
