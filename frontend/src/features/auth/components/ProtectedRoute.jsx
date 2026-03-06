@@ -6,7 +6,7 @@ export const ProtectedRoute = ({ children }) => {
   if (loading)
     return (
       <main className="flex-center min-h-screen w-full">
-        <h1 className="text-4xl">Loading</h1>
+        <h1 className="text-4xl">Loading...</h1>
       </main>
     );
 
