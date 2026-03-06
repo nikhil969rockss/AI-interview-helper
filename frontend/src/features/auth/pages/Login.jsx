@@ -2,12 +2,15 @@ import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
+  const { loading, handleLogin } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    await handleLogin({email, password})
   };
   return (
     <main className="flex-center min-h-screen">
