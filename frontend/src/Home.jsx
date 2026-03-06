@@ -1,7 +1,11 @@
-import { Outlet } from "react-router-dom";
+import { useAuth } from "./features/auth/hooks/useAuth";
 
 const Home = () => {
-  return <div className="">Hello from react-router-dom</div>;
+    const {user} = useAuth()
+  return <div className="flex-center flex-col min-h-screen w-full">
+    <h1 className="text-4xl">Hello {user?.username}</h1>
+    <p>welcome to home page</p>
+  </div>;
 };
 
 export default Home;

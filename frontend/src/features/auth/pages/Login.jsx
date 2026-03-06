@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useState } from "react";
@@ -8,9 +8,13 @@ const Login = () => {
   const { loading, handleLogin } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate()
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     await handleLogin({email, password})
+    navigate("/")
   };
   return (
     <main className="flex-center min-h-screen">
@@ -19,6 +23,7 @@ const Login = () => {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <Input
             id={"email"}
+            name="email"
             inputType="email"
             placeholder="Enter your Email"
             lable={"Email"}
@@ -28,6 +33,7 @@ const Login = () => {
           />
           <Input
             id={"password"}
+            name="password"
             inputType="password"
             placeholder="Enter your Password"
             lable={"Password"}
@@ -35,7 +41,7 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button type="submit">Login</Button>
+          <Button loading={loading} type="submit">Login</Button>
         </form>
         <p>
           Don't have an account?{" "}
