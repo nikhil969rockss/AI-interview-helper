@@ -1,153 +1,65 @@
 const { GoogleGenAI } = require("@google/genai");
 const { z } = require("zod");
 const { zodToJsonSchema } = require("zod-to-json-schema");
+const promptBuilder = require("../utils/promptBuilder")
+const interviewReportSchema = require('../validations-schemas/interviewSchema')
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GOOGLE_API_KEY,
 });
 
-const interviewReportSchema = z.object({
-    matchScore: z
-        .number()
-        .describe(
-            "A score between 0 and 100 indicating how well the candidate's profile matches the job describe",
-        ),
-    technicalQuestions: z
-        .array(
-            z.object({
-                question: z
-                    .string()
-                    .describe("The technical question can be asked in the interview"),
-                intention: z
-                    .string()
-                    .describe(
-                        "The intention of the interviewer behind asking this question",
-                    ),
-                answer: z
-                    .string()
-                    .describe(
-                        "How to answer this question, what points to cover what approach to take,etc.",
-                    ),
-            }),
-        )
-        .describe(
-            "Technical questions that can be asked in the interview along with their intention and how to answer",
-        ),
-
-    behavioralQuestions: z
-        .array(
-            z.object({
-                question: z
-                    .string()
-                    .describe("The technical question can be asked in the interview"),
-                intention: z
-                    .string()
-                    .describe(
-                        "The intention of the interviewer behind asking this question",
-                    ),
-                answer: z
-                    .string()
-                    .describe(
-                        "How to answer this question, what points to cover what approach to take,etc.",
-                    ),
-            }),
-        )
-        .describe(
-            "Behavioral questions that can be asked in the interview along with their intention and how to answer",
-        ),
-
-    skillGaps: z
-        .array(
-            z.object({
-                skill: z.string().describe("The skill that the candidate is lacking"),
-                severity: z
-                    .enum(["low", "medium", "high"])
-                    .describe("The severity of the skill gap"),
-            }),
-        )
-        .describe(
-            "List of skill gaps in the candidate profile along with severity",
-        ),
-    preparationPlan: z
-        .array(
-            z.object({
-                day: z
-                    .number()
-                    .describe("The day of the preparation plan, starting from 1"),
-                focus: z
-                    .string()
-                    .describe(
-                        "The main focus of the day in the preparation plan. e.g. data structure, system design, mock interview,etc.",
-                    ),
-                tasks: z.array(
-                    z
-                        .string()
-                        .describe(
-                            "List of tasks to be done on this day to follow the preparation plan, e.g. read a specific book or article, solve a set of problems, watch a video etc.",
-                        ),
-                ),
-            }),
-        )
-        .describe(
-            "A day-wise preparation plan for the candidate to follow in order to prepare for the interview effectively",
-        ),
-});
 
 async function generateInterviewReport({
     resume,
     selfDescription,
     jobDescription,
-}) {
-    const prompt = `
-You are an AI interview preparation assistant.
+}, retries = 3) {
 
-Analyze the candidate resume, self description and job description.
-
-Return ONLY JSON matching this schema:
-which is based on this schema ${zodToJsonSchema(interviewReportSchema)} follow this schema strictly, and return the out put accordingly
-
-{
-  matchScore: number (0-100),
-  technicalQuestions: [
-    { question: string, intention: string, answer: string }
-  ],
-  behavioralQuestions: [
-    { question: string, intention: string, answer: string }
-  ],
-  skillGaps: [
-    { skill: string, severity: "low" | "medium" | "high" }
-  ],
-  preparationPlan: [
-    { day: number, focus: string, tasks: string[] }
-  ]
-}
-
-Resume:
-${resume}
-
-Self Description:
-${selfDescription}
-
-Job Description:
-${jobDescription}
-
-`;
+    const prompt = promptBuilder({ resume, selfDescription, jobDescription })
 
     try {
-        const response = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
-            contents: prompt,
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: zodToJsonSchema(interviewReportSchema),
-                temperature: 0.2
-            },
-        });
-        return JSON.parse(response.text)
+        for (let i = 0; i < retries; i++) {
+            try {
+
+                const response = await ai.models.generateContent({
+                    model: "gemini-3.1-flash-lite-preview",
+                    contents: prompt,
+                    config: {
+                        responseMimeType: "application/json",
+                        responseSchema: z.toJSONSchema(interviewReportSchema),
+                    }
+                })
+                let text = response.text
+
+                text = text.replace(/```json/g, "").replace(/```/g, "")
+
+
+                const valitedResult = interviewReportSchema.safeParse(JSON.parse(text))
+
+                if (!valitedResult.success) {
+                    console.log("retrying again")
+                    console.log(valitedResult.error)
+                    throw new Error("Invalid response from the model")
+                }
+
+                return valitedResult.data
+
+
+            } catch (error) {
+                if (i == retries - 1) throw error
+            }
+        }
+
     }
     catch (error) {
+        if (error?.status == 503 || error?.code === 503) {
+            return { status: 503, message: "Unable to get response, Model is in high demand" }
+        }
+        if (error?.status == 429 || error?.code === 429) {
+            return { status: 429, message: "Model is exhausted for today, try again tomorrow" }
+        }
         console.log("Failed to generate response", error)
-        return [{ response: "Sorry couldn't get the result, Try again later" }]
+        return {status:400, message: error.message}
     }
 
 }
