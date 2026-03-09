@@ -1,8 +1,5 @@
-
-
-function promptBuilder({resume, selfDescription, jobDescription}){
-
-    const prompt = `You are a senior technical interviewer.
+function promptBuilder({ resume, selfDescription, jobDescription }) {
+  const prompt = `You are a senior technical interviewer.
 
 Candidate Resume:
 ${resume}
@@ -24,8 +21,8 @@ according to schema which is provided
 
 Return JSON only.
 
-`
-return prompt
+`;
+  return prompt;
 }
 
-module.exports = promptBuilder
+module.exports = promptBuilder;

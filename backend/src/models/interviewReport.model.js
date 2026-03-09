@@ -1,94 +1,111 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-
-const technicalQuestionsSchema = new mongoose.Schema({
+const technicalQuestionsSchema = new mongoose.Schema(
+  {
     question: {
-        type: String,
-        required: [true, "Question is required"]
+      type: String,
+      required: [true, "Question is required"],
     },
     intention: {
-        type: String,
-        required: [true, "Intention is required"]
+      type: String,
+      required: [true, "Intention is required"],
     },
     answer: {
-        type: String,
-        required: [true, "Answer is required"]
+      type: String,
+      required: [true, "Answer is required"],
     },
-}, { _id: false })
+  },
+  { _id: false },
+);
 
-const behavioralQuestionsSchema = new mongoose.Schema({
+const behavioralQuestionsSchema = new mongoose.Schema(
+  {
     question: {
-        type: String,
-        required: [true, "Question is required"]
+      type: String,
+      required: [true, "Question is required"],
     },
     intention: {
-        type: String,
-        required: [true, "Intention is required"]
+      type: String,
+      required: [true, "Intention is required"],
     },
     answer: {
-        type: String,
-        required: [true, "Answer is required"]
+      type: String,
+      required: [true, "Answer is required"],
     },
+  },
+  { _id: false },
+);
 
-}, { _id: false })
-
-const skillGapSchema = new mongoose.Schema({
+const skillGapSchema = new mongoose.Schema(
+  {
     skill: {
-        type: String,
-        required: [true, "Skill is required"]
+      type: String,
+      required: [true, "Skill is required"],
     },
     severity: {
-        type: String,
-        enum: {
-            values: ["low", "medium", "high"],
-            message: "Severity must be low, medium or high"
-        },
-        required: [true, "Severity is required"]
-    }
-}, { _id: false })
+      type: String,
+      enum: {
+        values: ["low", "medium", "high"],
+        message: "Severity must be low, medium or high",
+      },
+      required: [true, "Severity is required"],
+    },
+  },
+  { _id: false },
+);
 
-const preparationPlanSchema = new mongoose.Schema({
+const preparationPlanSchema = new mongoose.Schema(
+  {
     day: {
-        type: Number,
-        required: [true, "Day is required"]
+      type: Number,
+      required: [true, "Day is required"],
     },
     focus: {
-        type: String,
-        required: [true, "Focus is required"]
+      type: String,
+      required: [true, "Focus is required"],
     },
-    tasks: [{
+    tasks: [
+      {
         type: String,
-        required: [true, "Task is required"]
-    }]
-}, { _id: false })
+        required: [true, "Task is required"],
+      },
+    ],
+  },
+  { _id: false },
+);
 
-const interviewReportSchema = new mongoose.Schema({
-    user:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"User"
+const interviewReportSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     jobDescription: {
-        type: String,
-        required: [true, "Job Description is required"]
+      type: String,
+      required: [true, "Job Description is required"],
     },
     resume: {
-        type: String
+      type: String,
     },
     selfDescription: {
-        type: String
+      type: String,
     },
     matchScore: {
-        type: Number,
-        min: 0,
-        max: 100
+      type: Number,
+      min: 0,
+      max: 100,
     },
     technicalQuestions: [technicalQuestionsSchema],
     behavioralQuestions: [behavioralQuestionsSchema],
     skillGaps: [skillGapSchema],
     preparationPlan: [preparationPlanSchema],
-   
-},{timestamps:true})
+  },
+  { timestamps: true },
+);
 
-const InterviewReportModel = mongoose.model("InterviewReport", interviewReportSchema)
+const InterviewReportModel = mongoose.model(
+  "InterviewReport",
+  interviewReportSchema,
+);
 
-module.exports = InterviewReportModel
+module.exports = InterviewReportModel;

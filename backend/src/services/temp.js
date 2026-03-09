@@ -1,4 +1,4 @@
-const resume =`
+const resume = `
 Nikhil Singh
 New Delhi, India
 ns9013604867@gmail.com
@@ -53,7 +53,7 @@ CodeWorks Pvt Ltd | July 2021 - Dec 2022
  EDUCATION
  Bachelor of Science (Physical Science(chemistry)), University of Delhi, 2021,
 
-`
+`;
 
 const selfDescription = `
 I am a MERN stack developer with around 3 years of experience mainly focused on backedn development using Node.js and MongoDB. I have worked on building REST API's, implementing authentication using JWT, and optimizing database queries.
@@ -62,9 +62,9 @@ I enjoy working on system design problems and improving application performance.
 
 I am currently targeting backend developer roles where I can work on scalable systems and imporve my expertise in distributed systems and performance optimization
 
-`
+`;
 
-const jobDescription =`
+const jobDescription = `
 Postion: Backend Developer (Node.js)
 
 Location : Remote/Banglore
@@ -94,8 +94,10 @@ Preferred:
 - Exposure to distributed system.
 - knowledge of message queues(kafka, RabbitMQ).
 
-`
+`;
 
-module.exports ={
-    jobDescription, resume, selfDescription
-}
+module.exports = {
+  jobDescription,
+  resume,
+  selfDescription,
+};
