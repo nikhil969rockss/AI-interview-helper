@@ -8,13 +8,12 @@ const Login = () => {
   const { loading, handleLogin } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await handleLogin({email, password})
-    navigate("/")
+    await handleLogin({ email, password });
+    navigate("/");
   };
   return (
     <main className="flex-center min-h-screen">
@@ -41,7 +40,9 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button loading={loading} type="submit">Login</Button>
+          <Button loading={loading} type="submit">
+            Login
+          </Button>
         </form>
         <p>
           Don't have an account?{" "}

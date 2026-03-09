@@ -10,6 +10,6 @@ export const ProtectedRoute = ({ children }) => {
       </main>
     );
 
-    if(!user) return <Navigate to={"/login"} />
+  if (!user) return <Navigate to={"/login"} />;
   return children;
 };

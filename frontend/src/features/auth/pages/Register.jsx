@@ -1,16 +1,16 @@
-import React from 'react'
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Input from '../components/Input';
-import Button from '../components/Button';
+import React from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import Input from "../components/Input";
+import Button from "../components/Button";
 
 const Register = () => {
-    const [email, setEmail] = useState("");
-    const [username, setUsername] = useState("");
-      const [password, setPassword] = useState("");
-      const handleSubmit = (e) => {
-        e.preventDefault();
-      };
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
   return (
     <main className="flex-center min-h-screen">
       <div className="max-w-135 min-w-100 border border-gray-600/30 p-6 rounded-xl flex flex-col gap-6">
@@ -57,6 +57,6 @@ const Register = () => {
       </div>
     </main>
   );
-}
+};
 
-export default Register
+export default Register;
