@@ -150,15 +150,15 @@ export const PREPARATION_PLAN = [
 
 export const SKILL_GAPS = [
   {
-    "skill": "Redis (Production use)",
-    "severity": "medium"
+    skill: "Redis (Production use)",
+    severity: "medium",
   },
   {
-    "skill": "Docker & CI/CD",
-    "severity": "medium"
+    skill: "Docker & CI/CD",
+    severity: "medium",
   },
   {
-    "skill": "Distributed Systems / Message Queues",
-    "severity": "high"
-  }
-]
+    skill: "Distributed Systems / Message Queues",
+    severity: "high",
+  },
+];

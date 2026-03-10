@@ -1,8 +1,8 @@
 const { request, response } = require("express");
-const pdfParse = require("pdf-parse");
 const generateInterviewReport = require("../services/ai.service");
 const InterviewReportModel = require("../models/interviewReport.model");
 const parseResume = require("../services/pareResume.service");
+
 /**
  * @description Generate an interview report, by taking ```resume pdf``` or ```self description``` and ```job description```
  * @param {request} req - request object
@@ -68,28 +68,25 @@ async function getInterviewReportByIdController(req, res) {
     });
   }
   try {
-    const report = await InterviewReportModel.findOne({
+    const interviewReport = await InterviewReportModel.findOne({
       _id: interviewId,
-      user: req.user._id
-    })
-    if (!report) {
+      user: req.user._id,
+    });
+    if (!interviewReport) {
       return res.status(404).json({
         message: "Interview Report not found",
       });
     }
     return res.status(200).json({
       message: "Interview Report fetched successfully",
-      report,
-    })
-
+      interviewReport,
+    });
   } catch (error) {
-    console.log("getInterviewReportByIdController Error", error)
+    console.log("getInterviewReportByIdController Error", error);
     return res.status(500).json({
       message: "Internal Server Error",
-    })
-
+    });
   }
-
 }
 
 /**
@@ -99,29 +96,29 @@ async function getInterviewReportByIdController(req, res) {
  */
 async function getInterviewReportsController(req, res) {
   try {
-
     //fetching only userid _id and role
-    const reports = await InterviewReportModel.find({
-      user: req.user._id
-    }).sort({ createdAt: -1 }).select("-__v -jobDescription -resume -selfDescription -technicalQuestions -behavioralQuestions -skillGaps preparationPlan")
+    const interviewReports = await InterviewReportModel.find({
+      user: req.user._id,
+    })
+      .sort({ createdAt: -1 })
+      .select(
+        "-__v -jobDescription -resume -selfDescription -technicalQuestions -behavioralQuestions -skillGaps preparationPlan",
+      );
 
     return res.status(200).json({
       message: "Interview Reports fetched successfully",
-      reports,
-    })
-
+      interviewReports,
+    });
   } catch (error) {
-    console.log("getInterviewReportsController Error", error)
+    console.log("getInterviewReportsController Error", error);
     return res.status(500).json({
       message: "Internal Server Error",
-    })
-
+    });
   }
-
 }
 
 module.exports = {
   generateInterviewReportController,
   getInterviewReportByIdController,
-  getInterviewReportsController
+  getInterviewReportsController,
 };

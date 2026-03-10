@@ -6,7 +6,11 @@ const interviewReportSchema = z.object({
     .describe(
       "A score between 0 and 100 indicating how well the candidate's profile matches the job describe",
     ),
-  role: z.string().describe("The title of the interview report Eg: Backend Engineer , frontend Engineer, etc"),
+  role: z
+    .string()
+    .describe(
+      "The title of the interview report Eg: Backend Engineer , frontend Engineer, etc",
+    ),
   technicalQuestions: z
     .array(
       z.object({

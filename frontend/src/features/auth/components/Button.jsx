@@ -1,7 +1,14 @@
-
-const Button = ({ type = "button", className, loading, children, icon }) => {
+const Button = ({
+  type = "button",
+  className,
+  loading,
+  children,
+  icon,
+  onClick,
+}) => {
   return (
     <button
+      onClick={onClick}
       className={`${className ? className : "rounded-md bg-[#67435f] px-4 py-2 transition-all duration-300 active:scale-[0.9]"} ${loading ? "cursor-not-allowed bg-[#67435f55]" : ""} flex items-center gap-2`}
       type={type}
       disabled={loading}

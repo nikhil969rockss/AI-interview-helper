@@ -38,7 +38,6 @@ function UploadFile({ active, setActive, file, setFile }) {
       }
       setFile(file);
     }
-    console.log(file);
   };
 
   return (

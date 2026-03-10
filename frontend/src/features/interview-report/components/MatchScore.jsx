@@ -1,4 +1,3 @@
-
 const MatchScore = ({ matchScore }) => {
   let borderColor;
   let scoreMessage;
@@ -18,7 +17,7 @@ const MatchScore = ({ matchScore }) => {
   }
   return (
     <div className="flex flex-col items-center gap-3">
-      <h2 className="font-bold tracking-wide text-gray-400 uppercase text-sm">
+      <h2 className="text-sm font-bold tracking-wide text-gray-400 uppercase">
         Match Score
       </h2>
       <div

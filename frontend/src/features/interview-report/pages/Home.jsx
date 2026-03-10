@@ -1,10 +1,11 @@
-//libarary
+//library
 import { useState } from "react";
 import { PiBagFill } from "react-icons/pi";
 import { FaUser } from "react-icons/fa";
 import { MdDescription } from "react-icons/md";
 import { FaInfoCircle } from "react-icons/fa";
 import { BsStars } from "react-icons/bs";
+import { Navigate, useNavigate } from "react-router-dom";
 
 //components
 import Button from "../../auth/components/Button";
@@ -17,9 +18,41 @@ import useInterview from "../hooks/useInterview";
 function Home() {
   const [active, setActive] = useState(false);
   const [file, setFile] = useState(null);
-  const [jobDescription, setJobDescription] = useState("")
-  const [selfDescription, setSelfDescription ] = useState("")
-  const {error} = useInterview();
+  const [jobDescription, setJobDescription] = useState("");
+  const [selfDescription, setSelfDescription] = useState("");
+  const { error, createInterviewReport, setError, interviewReport, loading } =
+    useInterview();
+    const navigate = useNavigate();
+
+  async function handleGenerateReport() {
+    if (!jobDescription || !selfDescription || !file) {
+      return setError(
+        "Job Description, Self Description and File are required to get best result",
+      );
+    }
+    await createInterviewReport({
+      resumePdf: file,
+      jobDescription,
+      selfDescription,
+    });
+    setError("");
+    if (interviewReport) {
+      console.log(interviewReport);
+      // return <Navigate replace={`/interview/${interviewReport._id}`} />;
+      return navigate(`/interview/${interviewReport._id}`);
+
+    }
+  }
+  if (loading) {
+    return (
+      <main className="flex-center min-h-screen w-full">
+        <h1 className="text-4xl font-bold">
+          Generating Report <br />
+          Loading...
+        </h1>
+      </main>
+    );
+  }
 
   return (
     <main className="flex-center min-h-screen w-full">
@@ -36,7 +69,7 @@ function Home() {
             build a winning strategy
           </p>
         </div>
-        <div className="user-details-form flex h-[90%] min-w-140 rounded-lg border-[0.5px] border-[#686666] shadow-xl">
+        <div className="user-details-form flex min-h-[85vh] min-w-140 rounded-lg border-[0.5px] border-[#686666] shadow-xl">
           <div className="left flex flex-1 flex-col gap-4 border-[0.1px] border-gray-600 bg-gray-700/30 p-4">
             <div className="flex items-center justify-between">
               <label
@@ -90,7 +123,7 @@ function Home() {
             />
             <div className="partician flex items-center gap-2 text-xs">
               <div className="h-[0.2px] w-full border-b border-gray-300"></div>
-              OR
+              AND
               <div className="h-[0.2px] w-full border-b border-gray-300"></div>
               <div></div>
             </div>
@@ -116,15 +149,16 @@ function Home() {
               <div className="info-badge flex items-center gap-2 rounded-lg bg-blue-800/50 p-3 text-xs">
                 <FaInfoCircle />
                 <p>
-                  Either a <span className="font-semibold">Resume</span> or a{" "}
+                  For best result a{" "}
+                  <span className="font-semibold">Resume</span> and a{" "}
                   <span className="font-semibold">Self Description</span> is
                   required to generate a personalized plan
                 </p>
               </div>
-              <Button icon={<BsStars />}>Generate My Interview Strategy</Button>
-              {error && (
-                <p className="text-xs text-red-700">Error:{errorMsg}</p>
-              )}
+              <Button onClick={handleGenerateReport} icon={<BsStars />}>
+                Generate My Interview Strategy
+              </Button>
+              {error && <p className="text-xs text-red-700">Error:{error}</p>}
             </div>
           </div>
         </div>

@@ -9,22 +9,24 @@ const Questions = ({ questions, title }) => {
       <div className="flex gap-2">
         <h1 className="font-bold">{title} Questions</h1>
         <Badge className={"bg-gray-900 text-gray-400"}>
-          {questions.length} questions
+          {questions?.length} questions
         </Badge>
       </div>
       <HorizontalLine />
 
       <div className="flex flex-col gap-4">
-        {questions.map((question, index) => {
-          return (
-            <Accordian
-              q_no={index + 1}
-              intention={question.intention}
-              question={question.question}
-              answer={question.answer}
-            />
-          );
-        })}
+        {questions &&
+          questions.map((question, index) => {
+            return (
+              <Accordian
+                key={question.answer}
+                q_no={index + 1}
+                intention={question.intention}
+                question={question.question}
+                answer={question.answer}
+              />
+            );
+          })}
       </div>
     </div>
   );
