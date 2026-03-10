@@ -4,21 +4,16 @@ import { createContext } from "react";
 export const InterviewContext = createContext();
 
 export const InterviewProvider = ({ children }) => {
-  const [jobDescription, setJobDescription] = useState("");
-  const [resume, setResume] = useState("");
-  const [selfDescription, setSelfDescription] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const [error, setError] = useState("");
   return (
     <InterviewContext.Provider
       value={{
-        jobDescription,
-        selfDescription,
-        resume,
-        errorMsg,
-        setJobDescription,
-        setResume,
-        setSelfDescription,
-        setErrorMsg,
+        error,
+        setError,
+        loading,
+        setLoading,
       }}
     >
       {children}

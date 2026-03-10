@@ -1,4 +1,4 @@
-import React from "react";
+//components
 import Badge from "./Badge";
 import HorizontalLine from "../HorizontalLine";
 import Accordian from "./Accordian";

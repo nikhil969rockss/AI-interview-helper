@@ -4,16 +4,13 @@ import Register from "./features/auth/pages/Register";
 import Home from "./features/interview-report/pages/Home";
 import Interview from "./features/interview-report/pages/Interview";
 import { ProtectedRoute } from "./features/auth/components/ProtectedRoute";
-import { InterviewProvider } from "./features/interview-report/Interview.context";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <ProtectedRoute>
-        <InterviewProvider>
-          <Home />
-        </InterviewProvider>
+        <Home />
       </ProtectedRoute>
     ),
   },

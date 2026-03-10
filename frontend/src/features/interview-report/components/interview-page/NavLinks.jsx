@@ -1,4 +1,3 @@
-import React from "react";
 
 const NavLinks = ({ activeNav, setActiveNav, item }) => {
   return (

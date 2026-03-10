@@ -1,3 +1,4 @@
+//components
 import HorizontalLine from "../HorizontalLine";
 import Badge from "./Badge";
 import RoadMapIcon from "./RoadMapIcon";

@@ -1,3 +1,14 @@
+//library
+import { useState } from "react";
+
+//components
+import Questions from "../components/interview-page/Questions";
+import NavLinks from "../components/interview-page/NavLinks";
+import HorizontalLine from "../components/HorizontalLine";
+import RoadMap from "../components/interview-page/RoadMap";
+import MatchScore from "../components/MatchScore";
+import Badge from "../components/interview-page/Badge";
+
 import {
   BEHAVIORAL_QUESTIONS,
   NAV_ITEMS,
@@ -5,13 +16,7 @@ import {
   SKILL_GAPS,
   TECHNICAL_QUESTIONS,
 } from "../constants";
-import { useState } from "react";
-import Questions from "../components/interview-page/Questions";
-import NavLinks from "../components/interview-page/NavLinks";
-import HorizontalLine from "../components/HorizontalLine";
-import RoadMap from "../components/interview-page/RoadMap";
-import MatchScore from "../components/MatchScore";
-import Badge from "../components/interview-page/Badge";
+
 
 const Interview = () => {
   const [activeNav, setActiveNav] = useState("technical");

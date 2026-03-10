@@ -1,21 +1,25 @@
-import UploadFile from "../components/home-page/UploadFile";
+//libarary
+import { useState } from "react";
 import { PiBagFill } from "react-icons/pi";
 import { FaUser } from "react-icons/fa";
 import { MdDescription } from "react-icons/md";
-import TextArea from "../components/home-page/TextArea";
 import { FaInfoCircle } from "react-icons/fa";
-import Button from "../../auth/components/Button";
 import { BsStars } from "react-icons/bs";
+
+//components
+import Button from "../../auth/components/Button";
+import UploadFile from "../components/home-page/UploadFile";
+import TextArea from "../components/home-page/TextArea";
+
+//hooks
 import useInterview from "../hooks/useInterview";
 
 function Home() {
-  const {
-    jobDescription,
-    setJobDescription,
-    selfDescription,
-    setSelfDescription,
-    errorMsg,
-  } = useInterview();
+  const [active, setActive] = useState(false);
+  const [file, setFile] = useState(null);
+  const [jobDescription, setJobDescription] = useState("")
+  const [selfDescription, setSelfDescription ] = useState("")
+  const {error} = useInterview();
 
   return (
     <main className="flex-center min-h-screen w-full">
@@ -78,7 +82,12 @@ function Home() {
                 Best results
               </span>
             </div>
-            <UploadFile />
+            <UploadFile
+              active={active}
+              setActive={setActive}
+              file={file}
+              setFile={setFile}
+            />
             <div className="partician flex items-center gap-2 text-xs">
               <div className="h-[0.2px] w-full border-b border-gray-300"></div>
               OR
@@ -113,7 +122,7 @@ function Home() {
                 </p>
               </div>
               <Button icon={<BsStars />}>Generate My Interview Strategy</Button>
-              {errorMsg && (
+              {error && (
                 <p className="text-xs text-red-700">Error:{errorMsg}</p>
               )}
             </div>
