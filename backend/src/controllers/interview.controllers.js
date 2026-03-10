@@ -55,6 +55,73 @@ async function generateInterviewReportController(req, res) {
   }
 }
 
+/**
+ * @description Get interview report by interview id
+ * @param {request} req - request object
+ * @param {response} res - response object
+ */
+async function getInterviewReportByIdController(req, res) {
+  const { interviewId } = req.params;
+  if (!interviewId) {
+    return res.status(400).json({
+      message: "Interview Id is required",
+    });
+  }
+  try {
+    const report = await InterviewReportModel.findOne({
+      _id: interviewId,
+      user: req.user._id
+    })
+    if (!report) {
+      return res.status(404).json({
+        message: "Interview Report not found",
+      });
+    }
+    return res.status(200).json({
+      message: "Interview Report fetched successfully",
+      report,
+    })
+
+  } catch (error) {
+    console.log("getInterviewReportByIdController Error", error)
+    return res.status(500).json({
+      message: "Internal Server Error",
+    })
+
+  }
+
+}
+
+/**
+ * @description Get all the interviews report of the user
+ * @param {request} req - request object
+ * @param {response} res - response object
+ */
+async function getInterviewReportsController(req, res) {
+  try {
+
+    //fetching only userid _id and role
+    const reports = await InterviewReportModel.find({
+      user: req.user._id
+    }).sort({ createdAt: -1 }).select("-__v -jobDescription -resume -selfDescription -technicalQuestions -behavioralQuestions -skillGaps preparationPlan")
+
+    return res.status(200).json({
+      message: "Interview Reports fetched successfully",
+      reports,
+    })
+
+  } catch (error) {
+    console.log("getInterviewReportsController Error", error)
+    return res.status(500).json({
+      message: "Internal Server Error",
+    })
+
+  }
+
+}
+
 module.exports = {
   generateInterviewReportController,
+  getInterviewReportByIdController,
+  getInterviewReportsController
 };
