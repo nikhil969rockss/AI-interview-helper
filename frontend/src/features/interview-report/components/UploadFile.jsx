@@ -24,17 +24,17 @@ function UploadFile() {
 
   return (
     <div
-      className={`w-full border border-white/70 border-dashed p-10 flex-center hover:border-blue-300 ${active && "border-blue-300 "} rounded-lg`}
+      className={`flex-center w-full border border-dashed border-white/70 p-10 hover:border-blue-300 ${active && "border-blue-300 "} rounded-lg`}
     >
       <label
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         htmlFor="upload-resume"
-        className="flex flex-col gap-2 justify-center items-center  "
+        className="flex flex-col items-center justify-center gap-2"
       >
         <span
-          className={`w-14 h-14 flex-center rounded-full border border-dashed border-white/70 ${active && "border-blue-300"} cursor-pointer`}
+          className={`flex-center h-14 w-14 rounded-full border border-dashed border-white/70 ${active && "border-blue-300"} cursor-pointer`}
         >
           <FaCloudUploadAlt />
         </span>

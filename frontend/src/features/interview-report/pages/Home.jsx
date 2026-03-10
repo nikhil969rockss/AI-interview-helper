@@ -1,4 +1,3 @@
-import { useState } from "react";
 import UploadFile from "../components/UploadFile";
 import { PiBagFill } from "react-icons/pi";
 import { FaUser } from "react-icons/fa";
@@ -7,14 +6,20 @@ import TextArea from "../components/TextArea";
 import { FaInfoCircle } from "react-icons/fa";
 import Button from "../../auth/components/Button";
 import { BsStars } from "react-icons/bs";
+import useInterview from "../hooks/useInterview";
 
 function Home() {
-  const [jobDescription, setJobDescription] = useState("");
-  const [selfDescription, setSelfDescription] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const {
+    jobDescription,
+    setJobDescription,
+    selfDescription,
+    setSelfDescription,
+    errorMsg,
+  } = useInterview();
+
   return (
-    <main className="w-full min-h-screen flex-center  ">
-      <div className="flex flex-col gap-4 items-center h-[95vh]  ">
+    <main className="flex-center min-h-screen w-full">
+      <div className="flex h-[95vh] flex-col items-center gap-4">
         <div className="heading">
           <h1 className="text-4xl font-bold">
             Create Your Custom{" "}
@@ -27,24 +32,24 @@ function Home() {
             build a winning strategy
           </p>
         </div>
-        <div className="user-details-form min-w-140 flex border-[0.5px] border-[#686666] rounded-lg  shadow-xl h-[90%] ">
-          <div className="left flex-1 flex flex-col p-4 gap-4 bg-gray-700/30 border-gray-600 border-[0.1px] ">
-            <div className="flex justify-between items-center">
+        <div className="user-details-form flex h-[90%] min-w-140 rounded-lg border-[0.5px] border-[#686666] shadow-xl">
+          <div className="left flex flex-1 flex-col gap-4 border-[0.1px] border-gray-600 bg-gray-700/30 p-4">
+            <div className="flex items-center justify-between">
               <label
                 htmlFor="job-description"
-                className="font-semibold flex items-center gap-1"
+                className="flex items-center gap-1 font-semibold"
               >
                 <PiBagFill />
                 Target Job Description
               </label>
               <label
                 htmlFor="job-description"
-                className="p-2 text-sm bg-red-800/40 rounded-md"
+                className="rounded-md bg-red-800/40 p-2 text-sm"
               >
                 Required
               </label>
             </div>
-            <div className="relative w-full h-full">
+            <div className="relative h-full w-full">
               <TextArea
                 placeholder={
                   "Paste the full job description here... e.g. 'Senior Frontend Engineer at Google requires proficiency in React, Typescript, and large-scale system design.. "
@@ -54,37 +59,41 @@ function Home() {
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
               />
-              <span className="absolute bottom-2 right-4 text-xs text-gray-600">
+              <span className="absolute right-4 bottom-2 text-xs text-gray-600">
                 {jobDescription.length}/8000
               </span>
             </div>
           </div>
 
-          <div className="right  flex-1 p-4 flex flex-col gap-4">
-            <p className="font-bold  capitalize flex items-center gap-2">
+          <div className="right flex flex-1 flex-col gap-4 p-4">
+            <p className="flex items-center gap-2 font-bold capitalize">
               <FaUser /> Your profile
             </p>
 
-            <div>
-              <label htmlFor="upload-resume">Upload resume</label>
-              <span className="badge">Best results</span>
+            <div className="flex items-center gap-2">
+              <label className="capitalize" htmlFor="upload-resume">
+                Upload resume
+              </label>
+              <span className="badge rounded-md bg-pink-900/50 px-2 py-1">
+                Best results
+              </span>
             </div>
             <UploadFile />
-            <div className="partician flex items-center gap-2 text-xs ">
-              <div className="w-full h-[0.2px] border-b border-gray-300"></div>
+            <div className="partician flex items-center gap-2 text-xs">
+              <div className="h-[0.2px] w-full border-b border-gray-300"></div>
               OR
-              <div className="w-full h-[0.2px] border-b border-gray-300"></div>
+              <div className="h-[0.2px] w-full border-b border-gray-300"></div>
               <div></div>
             </div>
             <div className="After-Or-partician flex flex-col gap-4">
               <label
                 htmlFor="self-descripion"
-                className="font-bold capitalize flex items-center gap-2"
+                className="flex items-center gap-2 font-bold capitalize"
               >
                 <MdDescription />
                 Quick self description
               </label>
-              <div className="relative w-full h-full ">
+              <div className="relative h-full w-full">
                 <TextArea
                   placeholder={
                     "Briefly describe your experiences, key skills and years of experiences if you don't have a resume handy..."
@@ -95,7 +104,7 @@ function Home() {
                   onChange={(e) => setSelfDescription(e.target.value)}
                 />
               </div>
-              <div className="info-badge p-3 bg-blue-800/50 rounded-lg text-xs flex items-center gap-2">
+              <div className="info-badge flex items-center gap-2 rounded-lg bg-blue-800/50 p-3 text-xs">
                 <FaInfoCircle />
                 <p>
                   Either a <span className="font-semibold">Resume</span> or a{" "}

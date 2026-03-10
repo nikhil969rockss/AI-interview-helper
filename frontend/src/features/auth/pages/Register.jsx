@@ -13,7 +13,7 @@ const Register = () => {
   };
   return (
     <main className="flex-center min-h-screen">
-      <div className="max-w-135 min-w-100 border border-gray-600/30 p-6 rounded-xl flex flex-col gap-6">
+      <div className="flex max-w-135 min-w-100 flex-col gap-6 rounded-xl border border-gray-600/30 p-6">
         <h1 className="text-4xl font-bold">Register</h1>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <Input
@@ -48,7 +48,7 @@ const Register = () => {
         <p>
           Already have an account?{" "}
           <Link
-            className="text-[#9c7b95] font-semibold hover:underline"
+            className="font-semibold text-[#9c7b95] hover:underline"
             to={"/login"}
           >
             Login
