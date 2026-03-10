@@ -11,7 +11,8 @@ Job Description:
 ${jobDescription}
 
 Generate:
-
+- matchScore,
+- role
 - technical interview questions
 - behavioral questions
 - skill gaps

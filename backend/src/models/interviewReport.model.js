@@ -80,6 +80,10 @@ const interviewReportSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    role: {
+      type: String,
+      required: [true, "Title is required"],
+    },
     jobDescription: {
       type: String,
       required: [true, "Job Description is required"],
