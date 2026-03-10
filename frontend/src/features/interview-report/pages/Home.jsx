@@ -1,8 +1,8 @@
-import UploadFile from "../components/UploadFile";
+import UploadFile from "../components/home-page/UploadFile";
 import { PiBagFill } from "react-icons/pi";
 import { FaUser } from "react-icons/fa";
 import { MdDescription } from "react-icons/md";
-import TextArea from "../components/TextArea";
+import TextArea from "../components/home-page/TextArea";
 import { FaInfoCircle } from "react-icons/fa";
 import Button from "../../auth/components/Button";
 import { BsStars } from "react-icons/bs";
