@@ -14,6 +14,7 @@ import TextArea from "../components/home-page/TextArea";
 
 //hooks
 import useInterview from "../hooks/useInterview";
+import InterviewLoading from "../components/interview-page/Loading";
 
 function Home() {
   const [active, setActive] = useState(false);
@@ -22,7 +23,7 @@ function Home() {
   const [selfDescription, setSelfDescription] = useState("");
   const { error, createInterviewReport, setError, interviewReport, loading } =
     useInterview();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   async function handleGenerateReport() {
     if (!jobDescription || !selfDescription || !file) {
@@ -40,18 +41,10 @@ function Home() {
       console.log(interviewReport);
       // return <Navigate replace={`/interview/${interviewReport._id}`} />;
       return navigate(`/interview/${interviewReport._id}`);
-
     }
   }
   if (loading) {
-    return (
-      <main className="flex-center min-h-screen w-full">
-        <h1 className="text-4xl font-bold">
-          Generating Report <br />
-          Loading...
-        </h1>
-      </main>
-    );
+    return <InterviewLoading />;
   }
 
   return (

@@ -53,6 +53,7 @@ const Interview = () => {
 
   return (
     <main className="container mx-auto mt-10 grid min-h-[90vh] grid-cols-10 rounded-lg border border-gray-800 shadow-xs shadow-gray-800">
+      {/* LEFT SIDE BAR */}
       <aside className="left-sidebar col-span-2 border-r border-gray-800 p-6 text-gray-400">
         <h2 className="mb-4 text-sm font-bold tracking-wide">SECTIONS</h2>
         {NAV_ITEMS.map((item) => {
@@ -67,6 +68,7 @@ const Interview = () => {
         })}
       </aside>
 
+      {/* MAIN CONTENT */}
       <section className="main-content col-span-6 p-6">
         {activeNav === "technical" && (
           <Questions questions={interviewReport?.technicalQuestions} />
@@ -81,6 +83,8 @@ const Interview = () => {
           <RoadMap plans={interviewReport?.preparationPlan} />
         )}
       </section>
+
+      {/* RIGHT SIDE BAR */}
 
       <aside className="right-sidebar col-span-2 border-l border-gray-800 p-6">
         <div className="flex flex-col items-center gap-4">
