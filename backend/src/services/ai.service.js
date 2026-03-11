@@ -1,16 +1,18 @@
 const { GoogleGenAI } = require("@google/genai");
 const { z } = require("zod");
-const { promptBuilderForResume, promptBuilder } = require("../utils/promptBuilder");
+const {
+  promptBuilderForResume,
+  promptBuilder,
+} = require("../utils/promptBuilder");
 const interviewReportSchema = require("../validations-schemas/interviewSchema");
-const { generatePdfFromHtmlContent } = require("./generatePdf.service")
-
+const { generatePdfFromHtmlContent } = require("./generatePdf.service");
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GOOGLE_API_KEY,
 });
 
 /**
- * @param {object} - { resume, selfDescription, jobDescription } - object containing resume, selfDescription and jobDescription   
+ * @param {object} - { resume, selfDescription, jobDescription } - object containing resume, selfDescription and jobDescription
  * @param {number} retries - number of retries if model fails to generate the require schema report
  * @returns - generated interview report
  */
@@ -66,32 +68,34 @@ async function generateInterviewReport(
   }
 }
 
-
 async function generateResumePdf({ resume, jobDescription, selfDescription }) {
   try {
     const resumePdfSchema = z.object({
-      html: z.string().describe("The HTML content of the resume which can be converted to PDF using any library like puppeteer ")
-    })
+      html: z
+        .string()
+        .describe(
+          "The HTML content of the resume which can be converted to PDF using any library like puppeteer ",
+        ),
+    });
 
-    const prompt = promptBuilderForResume({ resume, jobDescription, selfDescription })
+    const prompt = promptBuilderForResume({
+      resume,
+      jobDescription,
+      selfDescription,
+    });
     const response = await ai.models.generateContent({
       model: "gemini-3.1-flash-lite-preview",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
-        responseSchema: z.toJSONSchema(resumePdfSchema)
+        responseSchema: z.toJSONSchema(resumePdfSchema),
+      },
+    });
+    const parsed = JSON.parse(response.text);
 
-      }
-    })
-    const parsed = JSON.parse(response.text)
-    console.log(parsed)
+    const pdfBuffer = await generatePdfFromHtmlContent(parsed["html"]);
 
-    const pdfBuffer = await generatePdfFromHtmlContent(parsed["html"])
-
-    console.log(pdfBuffer)
-
-    return {pdfBuffer}
-
+    return { pdfBuffer };
   } catch (error) {
     if (error?.status == 503 || error?.code === 503) {
       return {
@@ -107,9 +111,7 @@ async function generateResumePdf({ resume, jobDescription, selfDescription }) {
     }
     console.log("Failed to generate response", error);
     return { status: 400, message: error.message };
-
   }
-
 }
 
 module.exports = { generateInterviewReport, generateResumePdf };
