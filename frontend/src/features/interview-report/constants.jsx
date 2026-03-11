@@ -59,6 +59,7 @@ export const NAV_ITEMS = [
   },
 ];
 
+//Dummy data for technical questions
 export const TECHNICAL_QUESTIONS = [
   {
     question:
@@ -86,6 +87,7 @@ export const TECHNICAL_QUESTIONS = [
   },
 ];
 
+//Dummy data for behavioral questions
 export const BEHAVIORAL_QUESTIONS = [
   {
     question:
@@ -105,6 +107,7 @@ export const BEHAVIORAL_QUESTIONS = [
   },
 ];
 
+//Dummy data for the preparation plan
 export const PREPARATION_PLAN = [
   {
     day: 1,
@@ -148,6 +151,7 @@ export const PREPARATION_PLAN = [
   },
 ];
 
+//Dummy data for skill gaps
 export const SKILL_GAPS = [
   {
     skill: "Redis (Production use)",

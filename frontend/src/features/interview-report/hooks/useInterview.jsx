@@ -14,8 +14,8 @@ const useInterview = () => {
   const {
     error,
     setError,
-    loading,
-    setLoading,
+    interviewLoading,
+    setInterviewLoading,
     interviewReport,
     setInterviewReport,
     interviewReports,
@@ -27,7 +27,7 @@ const useInterview = () => {
     jobDescription,
     selfDescription,
   }) => {
-    setLoading(true);
+    setInterviewLoading(true);
     setError("");
 
     try {
@@ -42,17 +42,18 @@ const useInterview = () => {
 
       if (response.interviewReport) {
         setInterviewReport(response.interviewReport);
+        return response.interviewReport;
       }
     } catch (error) {
       console.log(error);
       setError("Failed to generate report");
     } finally {
-      setLoading(false);
+      setInterviewLoading(false);
     }
   };
 
   const interviewReportById = async (id) => {
-    setLoading(true);
+    setInterviewLoading(true);
     setError("");
     try {
       const response = await getInterviewReportById({ interviewId: id });
@@ -63,12 +64,11 @@ const useInterview = () => {
       console.log(error);
       setError("Failed to get Interview Report");
     } finally {
-      setLoading(false);
+      setInterviewLoading(false);
     }
   };
 
   const interviewReportsByUser = async () => {
-    setLoading(true);
     setError("");
     try {
       const response = await getInterviewReports();
@@ -78,7 +78,6 @@ const useInterview = () => {
     } catch (error) {
       setError("Failed to get all Interview Reports");
     } finally {
-      setLoading(false);
     }
   };
 
@@ -88,8 +87,8 @@ const useInterview = () => {
     interviewReportById,
     error,
     setError,
-    loading,
-    setLoading,
+    interviewLoading,
+    setInterviewLoading,
     interviewReport,
     setInterviewReport,
     interviewReports,

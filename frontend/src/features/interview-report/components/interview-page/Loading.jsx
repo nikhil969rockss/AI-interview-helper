@@ -7,7 +7,10 @@ const InterviewLoading = () => {
         <div className="flex w-full animate-pulse flex-col gap-4">
           {Array.from({ length: 3 }).map((_, i) => {
             return (
-              <div className="h-4 w-full animate-pulse rounded-md bg-gray-700 p-3"></div>
+              <div
+                key={i}
+                className="h-4 w-full animate-pulse rounded-md bg-gray-700 p-3"
+              ></div>
             );
           })}
         </div>

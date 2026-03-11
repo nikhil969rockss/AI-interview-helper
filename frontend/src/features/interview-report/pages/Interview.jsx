@@ -9,35 +9,20 @@ import HorizontalLine from "../components/HorizontalLine";
 import RoadMap from "../components/interview-page/RoadMap";
 import MatchScore from "../components/MatchScore";
 import Badge from "../components/interview-page/Badge";
+import { NAV_ITEMS } from "../constants";
 
-import {
-  BEHAVIORAL_QUESTIONS,
-  NAV_ITEMS,
-  PREPARATION_PLAN,
-  SKILL_GAPS,
-  TECHNICAL_QUESTIONS,
-} from "../constants";
+//hooks
 import useInterview from "../hooks/useInterview";
-import { getInterviewReportById } from "../services/interview.api";
-import Button from "../../auth/components/Button";
 
 const Interview = () => {
   const params = useParams();
-  const { interviewReport, setInterviewReport } = useInterview();
+  const { interviewReport, interviewReportById } = useInterview();
   const [activeNav, setActiveNav] = useState("technical");
 
   useEffect(() => {
-    async function getReport() {
-      const response = await getInterviewReportById({
-        interviewId: params.interviewId,
-      });
-      setInterviewReport(response.interviewReport);
-    }
-
-    getReport();
+    if (params.interviewId) interviewReportById(params.interviewId);
   }, []);
 
-  console.log(interviewReport);
   if (!interviewReport) {
     return (
       <main className="flex-center h-screen w-full">

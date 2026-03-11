@@ -102,7 +102,7 @@ async function getInterviewReportsController(req, res) {
     })
       .sort({ createdAt: -1 })
       .select(
-        "-__v -jobDescription -resume -selfDescription -technicalQuestions -behavioralQuestions -skillGaps preparationPlan",
+        "-jobDescription -resume -selfDescription -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan",
       );
 
     return res.status(200).json({

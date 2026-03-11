@@ -10,7 +10,7 @@ const Logout = () => {
     return navigate("/login");
   };
   return (
-    <div className="sticky top-0 left-0 container mx-auto flex items-center justify-end pt-4">
+    <div className="flex w-[20%] items-center justify-end">
       <div className="flex flex-col gap-1">
         <p>Hello👋{user.username}</p>
         <button

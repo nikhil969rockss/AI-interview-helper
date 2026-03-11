@@ -1,11 +1,11 @@
 //library
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PiBagFill } from "react-icons/pi";
 import { FaUser } from "react-icons/fa";
 import { MdDescription } from "react-icons/md";
 import { FaInfoCircle } from "react-icons/fa";
 import { BsStars } from "react-icons/bs";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 //components
 import Button from "../../auth/components/Button";
@@ -16,14 +16,22 @@ import TextArea from "../components/home-page/TextArea";
 import useInterview from "../hooks/useInterview";
 import InterviewLoading from "../components/interview-page/Loading";
 import Logout from "../components/home-page/Logout";
+import UserReport from "../components/home-page/UserReport";
 
 function Home() {
   const [active, setActive] = useState(false);
   const [file, setFile] = useState(null);
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
-  const { error, createInterviewReport, setError, interviewReport, loading } =
-    useInterview();
+  const {
+    error,
+    createInterviewReport,
+    setError,
+    interviewReport,
+    interviewLoading,
+    interviewReports,
+    interviewReportsByUser,
+  } = useInterview();
   const navigate = useNavigate();
 
   async function handleGenerateReport() {
@@ -32,40 +40,56 @@ function Home() {
         "Job Description, Self Description and File are required to get best result",
       );
     }
-    await createInterviewReport({
+    const report = await createInterviewReport({
       resumePdf: file,
       jobDescription,
       selfDescription,
     });
     setError("");
-    if (interviewReport) {
-      console.log(interviewReport);
-      // return <Navigate replace={`/interview/${interviewReport._id}`} />;
-      return navigate(`/interview/${interviewReport._id}`);
+    if (report) {
+      navigate(`/interview/${report._id}`);
     }
   }
-  if (loading) {
+
+  useEffect(() => {
+    if (!interviewReports.length) {
+      interviewReportsByUser();
+    }
+  }, []);
+
+  if (interviewLoading) {
     return <InterviewLoading />;
   }
 
   return (
     <>
-      <Logout/>
-      <main className="flex-center min-h-screen container mx-auto">
-        <div className="flex h-[95vh] flex-col items-center w-full gap-4">
-          <div className="heading">
-            <h1 className="text-4xl font-bold">
-              Create Your Custom{" "}
-              <span className="bg-linear-to-r from-[#313ab8] to-[#e44575] bg-clip-text text-transparent">
-                Interview Plan
-              </span>
-            </h1>
-            <p>
-              Let our AI analyze the job requirements and your unique profile to
-              build a winning strategy
-            </p>
+      {/* Logout button */}
+
+      {/* Main Screen */}
+
+      <main className="container mx-auto flex min-h-screen flex-col">
+        <div className="flex min-h-[95vh] w-full flex-col gap-4">
+          {/* Heading */}
+
+          <div className="heading flex w-full justify-center pt-4">
+            <div className="w-full">
+              <h1 className="text-4xl font-bold">
+                Create Your Custom{" "}
+                <span className="bg-linear-to-r from-[#313ab8] to-[#e44575] bg-clip-text text-transparent">
+                  Interview Plan
+                </span>
+              </h1>
+              <p className="">
+                Let our AI analyze the job requirements and your unique profile
+                to build a winning strategy
+              </p>
+            </div>
+            <Logout />
           </div>
-          <div className="user-details-form flex min-h-[85vh] min-w-140 rounded-lg border-[0.5px] border-[#686666] shadow-xl">
+
+          {/* Resume-details, job description form */}
+
+          <div className="user-details-form flex min-h-[85vh] w-full rounded-lg border-[0.5px] border-[#686666] shadow-xl">
             <div className="left flex flex-1 flex-col gap-4 border-[0.1px] border-gray-600 bg-gray-700/30 p-4">
               <div className="flex items-center justify-between">
                 <label
@@ -83,6 +107,8 @@ function Home() {
                 </label>
               </div>
               <div className="relative h-full w-full">
+                {/* Text-Area component for job-description */}
+
                 <TextArea
                   placeholder={
                     "Paste the full job description here... e.g. 'Senior Frontend Engineer at Google requires proficiency in React, Typescript, and large-scale system design.. "
@@ -111,6 +137,9 @@ function Home() {
                   Best results
                 </span>
               </div>
+
+              {/* Upload file component */}
+
               <UploadFile
                 active={active}
                 setActive={setActive}
@@ -132,6 +161,8 @@ function Home() {
                   Quick self description
                 </label>
                 <div className="relative h-full w-full">
+                  {/* Text-Area component for self-description */}
+
                   <TextArea
                     placeholder={
                       "Briefly describe your experiences, key skills and years of experiences if you don't have a resume handy..."
@@ -151,7 +182,11 @@ function Home() {
                     required to generate a personalized plan
                   </p>
                 </div>
-                <Button onClick={handleGenerateReport} icon={<BsStars />}>
+                <Button
+                  className={"hover:ring-2 hover:ring-cyan-600"}
+                  onClick={handleGenerateReport}
+                  icon={<BsStars />}
+                >
                   Generate My Interview Strategy
                 </Button>
                 {error && <p className="text-xs text-red-700">Error:{error}</p>}
@@ -159,6 +194,19 @@ function Home() {
             </div>
           </div>
         </div>
+
+        {/* User Interview Reports */}
+
+        {interviewReports.length > 0 && (
+          <div className="mt-6 mb-5 flex w-full flex-col gap-4">
+            <h2 className="font-bold">Your Recient Reports</h2>
+            <div className="grid grid-cols-8 gap-4">
+              {interviewReports.map((report) => (
+                <UserReport key={report._id} report={report} />
+              ))}
+            </div>
+          </div>
+        )}
       </main>
     </>
   );
