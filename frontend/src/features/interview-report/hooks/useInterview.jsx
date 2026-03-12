@@ -50,6 +50,7 @@ const useInterview = () => {
     } catch (error) {
       console.log(error);
       setError("Failed to generate report");
+      return null
     } finally {
       setInterviewLoading(false);
     }
@@ -66,6 +67,7 @@ const useInterview = () => {
     } catch (error) {
       console.log(error);
       setError("Failed to get Interview Report");
+      return null
     } finally {
       setInterviewLoading(false);
     }
@@ -79,7 +81,8 @@ const useInterview = () => {
         setInterviewReports(response.interviewReports);
       }
     } catch (error) {
-      setError("Failed to get all Interview Reports");
+      console.log(error)
+      return null
     } finally {
     }
   };
