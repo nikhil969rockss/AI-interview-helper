@@ -1,7 +1,8 @@
 import axios from "axios";
 
+//const DEV_URL = "http://localhost:3000/api"
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "https://ai-interview-helper-5dpl.onrender.com/api",
   withCredentials: true,
 });
 
