@@ -150,12 +150,12 @@ async function generateResumePdfController(req, res) {
     });
 
     if (result?.status === 503) {
-      res.status(503).json({
+      return res.status(503).json({
         message: result?.message,
       });
     }
     if (result?.status === 429) {
-      res.status(503).json({
+      return res.status(503).json({
         message: result?.message,
       });
     }
