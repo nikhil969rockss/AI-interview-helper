@@ -21,5 +21,9 @@ const interviewRouter = require("./routes/interview.routes");
 // using all the routes here
 app.use("/api/auth", authRouter);
 app.use("/api/interview", interviewRouter);
+//testing route
+app.get("/test", (res, res) => {
+  res.send("Your app is runnning")
+})
 
 module.exports = app;
