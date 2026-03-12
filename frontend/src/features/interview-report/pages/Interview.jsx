@@ -1,6 +1,7 @@
 //library
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { WiStars } from "react-icons/wi";
 
 //components
 import Questions from "../components/interview-page/Questions";
@@ -10,13 +11,15 @@ import RoadMap from "../components/interview-page/RoadMap";
 import MatchScore from "../components/MatchScore";
 import Badge from "../components/interview-page/Badge";
 import { NAV_ITEMS } from "../constants";
+import Button from "../../auth/components/Button";
 
 //hooks
 import useInterview from "../hooks/useInterview";
 
 const Interview = () => {
   const params = useParams();
-  const { interviewReport, interviewReportById } = useInterview();
+  const { interviewReport, interviewReportById, pdfLoading, getPdf } =
+    useInterview();
   const [activeNav, setActiveNav] = useState("technical");
 
   useEffect(() => {
@@ -35,22 +38,48 @@ const Interview = () => {
       </main>
     );
   }
+  //function to generate dedicated pdf
+
+  async function handleGeneratePdf() {
+    await getPdf(params.interviewId);
+  }
+
+  //Loading screen while generating the pdf
+  if (pdfLoading) {
+    return (
+      <main className="flex-center h-screen w-full">
+        <h1>Generating Pdf</h1>
+        <p>Please wait...</p>
+      </main>
+    );
+  }
 
   return (
     <main className="container mx-auto mt-10 grid min-h-[90vh] grid-cols-10 rounded-lg border border-gray-800 shadow-xs shadow-gray-800">
       {/* LEFT SIDE BAR */}
-      <aside className="left-sidebar col-span-2 border-r border-gray-800 p-6 text-gray-400">
-        <h2 className="mb-4 text-sm font-bold tracking-wide">SECTIONS</h2>
-        {NAV_ITEMS.map((item) => {
-          return (
-            <NavLinks
-              key={item.id}
-              item={item}
-              activeNav={activeNav}
-              setActiveNav={setActiveNav}
-            />
-          );
-        })}
+      <aside className="left-sidebar col-span-2 flex flex-col justify-between border-r border-gray-800 p-6 text-gray-400">
+        <div>
+          <h2 className="mb-4 text-sm font-bold tracking-wide">SECTIONS</h2>
+          {NAV_ITEMS.map((item) => {
+            return (
+              <NavLinks
+                key={item.id}
+                item={item}
+                activeNav={activeNav}
+                setActiveNav={setActiveNav}
+              />
+            );
+          })}
+        </div>
+        <Button
+          onClick={handleGeneratePdf}
+          icon={<WiStars size={40} />}
+          className={
+            "flex items-center bg-fuchsia-900 text-xs text-fuchsia-400 hover:ring-4 hover:ring-fuchsia-400"
+          }
+        >
+          Generate Dedicated Resume
+        </Button>
       </aside>
 
       {/* MAIN CONTENT */}

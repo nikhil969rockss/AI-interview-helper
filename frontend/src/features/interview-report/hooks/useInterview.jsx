@@ -4,6 +4,7 @@ import {
   generateInterviewReport,
   getInterviewReportById,
   getInterviewReports,
+  generateResumePdf,
 } from "../services/interview.api";
 
 const useInterview = () => {
@@ -20,6 +21,8 @@ const useInterview = () => {
     setInterviewReport,
     interviewReports,
     setInterviewReports,
+    pdfLoading,
+    setPdfLoading,
   } = context;
 
   const createInterviewReport = async ({
@@ -81,6 +84,25 @@ const useInterview = () => {
     }
   };
 
+  const getPdf = async (interviewId) => {
+    setPdfLoading(true);
+    try {
+      const response = await generateResumePdf({ interviewId });
+      const url = window.URL.createObjectURL(
+        new Blob([response], { type: "application/pdf" }),
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `resume_${interviewId.slice(0, 6)}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setPdfLoading(false);
+    }
+  };
+
   return {
     createInterviewReport,
     interviewReportsByUser,
@@ -93,6 +115,8 @@ const useInterview = () => {
     setInterviewReport,
     interviewReports,
     setInterviewReports,
+    getPdf,
+    pdfLoading,
   };
 };
 
