@@ -14,7 +14,7 @@ function generateToken(res, token_name, token_data) {
   res.cookie(token_name, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "development" ? false : true,
-    sameSite: "strict",
+    sameSite: "none",
     maxAge: 24 * 60 * 60 * 1000, // 1D cookie
   });
 }
