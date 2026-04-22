@@ -11,51 +11,95 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../auth/components/Button";
 import UploadFile from "../components/home-page/UploadFile";
 import TextArea from "../components/home-page/TextArea";
+import Header from "../../auth/components/Header";
 
 //hooks
-import useInterview from "../hooks/useInterview";
 import InterviewLoading from "../components/interview-page/Loading";
-import Logout from "../components/home-page/Logout";
 import UserReport from "../components/home-page/UserReport";
+import { isUserTest } from "../../../lib/utils";
+import { toast } from "react-toastify";
+import { useAuthStore } from "../../store/auth.store";
+import { useInterviewStore } from "../../store/interview.store";
 
 function Home() {
   const [active, setActive] = useState(false);
   const [file, setFile] = useState(null);
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
+  const [showLoginButton, setShowLoginButton] = useState(false);
+  const { user, handleLogout, loading } = useAuthStore();
+
+  const isUserTestUser = isUserTest(user);
+
   const {
-    error,
     createInterviewReport,
-    setError,
-    interviewReport,
     interviewLoading,
     interviewReports,
     interviewReportsByUser,
-  } = useInterview();
+    testUserDemo,
+    setTestUserDemo,
+  } = useInterviewStore();
   const navigate = useNavigate();
+
+  // to setup only one generation as a test user
+  useEffect(() => {
+    const stored = localStorage.getItem("test");
+    const isDemo = stored === "true";
+    setTestUserDemo(isDemo);
+    if (!isDemo) return;
+    const timerId = setTimeout(
+      () => {
+        setTestUserDemo(false);
+        localStorage.setItem("test", "false");
+      },
+      1000 * 60 * 60 * 24,
+    );
+
+    return () => clearTimeout(timerId);
+  }, [setTestUserDemo]);
 
   async function handleGenerateReport() {
     if (!jobDescription || !selfDescription || !file) {
-      return setError(
+      toast.error(
         "Job Description, Self Description and File are required to get best result",
       );
+      return;
     }
+
+    if (isUserTestUser && testUserDemo) {
+      toast.info(
+        "You can only generate one report as a test user, try again tommorrow",
+      );
+      setShowLoginButton(true);
+      return;
+    }
+
     const report = await createInterviewReport({
       resumePdf: file,
       jobDescription,
       selfDescription,
     });
-    setError("");
+
     if (report) {
+      if (isUserTestUser) {
+        setTestUserDemo(true);
+        setTestUserDemo(localStorage.setItem("test", "true"));
+      }
       navigate(`/interview/${report._id}`);
     }
+  }
+
+  // after generating a test user report, show signup button
+  async function handleTestUserSignup() {
+    await handleLogout();
+    navigate("/register", { replace: true });
   }
 
   useEffect(() => {
     if (!interviewReports.length) {
       interviewReportsByUser();
     }
-  }, []);
+  }, [interviewReports.length, interviewReportsByUser]);
 
   if (interviewLoading) {
     return <InterviewLoading />;
@@ -63,12 +107,45 @@ function Home() {
 
   return (
     <>
-      {/* Logout button */}
-
       {/* Main Screen */}
 
       <main className="container mx-auto flex min-h-screen flex-col">
-        <div className="flex min-h-[95vh] w-full flex-col gap-4">
+        <Header
+          ExtraElement={
+            <div className="flex items-end gap-4">
+              {/* sign up button */}
+              {showLoginButton && (
+                <button
+                  onClick={handleTestUserSignup}
+                  className="flex-center bg-surface-dim cursor-pointer rounded-lg border-2 border-transparent px-4 py-2 transition-all duration-300 hover:border-purple-200"
+                >
+                  <span className="animate-pulse font-bold"> Sign up</span>
+                </button>
+              )}
+
+              {/* profile image initials */}
+              <p className="flex items-center gap-2 overflow-hidden">
+                <span className="">👋</span>
+                <img
+                  src={`https://api.dicebear.com/5.x/initials/svg?seed=${user?.username}`}
+                  alt="user"
+                  className="size-10 rounded-full select-none"
+                  draggable={false}
+                />
+              </p>
+
+              {/* Logout button */}
+              <button
+                disabled={loading}
+                onClick={async () => await handleLogout()}
+                className="flex-center cursor-pointer rounded-lg border-2 border-transparent bg-linear-to-r from-red-600 to-rose-600 px-4 py-2 transition-all duration-300 hover:border-2 hover:border-red-400 disabled:bg-gray-500"
+              >
+                Logout
+              </button>
+            </div>
+          }
+        />
+        <div className="my-20 flex min-h-[95vh] w-full flex-col gap-4">
           {/* Heading */}
 
           <div className="heading flex w-full justify-center pt-4">
@@ -84,7 +161,6 @@ function Home() {
                 to build a winning strategy
               </p>
             </div>
-            <Logout />
           </div>
 
           {/* Resume-details, job description form */}
@@ -189,7 +265,6 @@ function Home() {
                 >
                   Generate My Interview Strategy
                 </Button>
-                {error && <p className="text-xs text-red-700">Error:{error}</p>}
               </div>
             </div>
           </div>

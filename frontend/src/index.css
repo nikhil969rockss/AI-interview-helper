@@ -21,6 +21,33 @@ body,
     sans-serif;
 }
 
+@theme {
+  --color-background: #0b1326;
+  --color-surface-dim: #0b1326;
+  --color-surface-container-lowest: #060e20;
+  --color-primary: #d0bcff;
+  --color-secondary: #ffb0cd;
+}
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 @utility flex-center {
   @apply flex items-center justify-center;
+}
+
+textarea::-webkit-scrollbar {
+  display: none;
+}
+
+/* Internet Explorer 10+ */
+textarea {
+  -ms-overflow-style: none;
+}
+
+/* Firefox (older versions) */
+textarea {
+  overflow: -moz-scrollbars-none;
 }

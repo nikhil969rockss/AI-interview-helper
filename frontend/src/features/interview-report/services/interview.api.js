@@ -1,8 +1,9 @@
 import axios from "axios";
 
-//const DEV_URL = "http://localhost:3000/api"
+const DEV_URL = import.meta.env.VITE_DEV_URL;
+const PROD_URL = import.meta.env.VITE_PROD_URL;
 const api = axios.create({
-  baseURL: "https://ai-interview-helper-5dpl.onrender.com/api",
+  baseURL: `${PROD_URL}/api`,
   withCredentials: true,
 });
 
@@ -70,14 +71,13 @@ export async function getInterviewReports() {
  * @edescription Generate resume pdf for the given job description
  */
 export async function generateResumePdf({ interviewId }) {
- 
   try {
     const response = await api.post(
       `/interview/resume/pdf/${interviewId}`,
       null,
       { responseType: "blob" },
     );
-    console.log(response)
+    console.log(response);
 
     if (response.status >= 400) {
       throw new Error(response.message);

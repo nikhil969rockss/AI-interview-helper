@@ -1,5 +1,3 @@
-import React from "react";
-
 const Input = ({ lable, id, inputType = "text", ...rest }) => {
   return (
     <div className="flex flex-col gap-3">

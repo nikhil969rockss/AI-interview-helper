@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { WiStars } from "react-icons/wi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 //components
 import Questions from "../components/interview-page/Questions";
@@ -14,17 +15,20 @@ import { NAV_ITEMS } from "../constants";
 import Button from "../../auth/components/Button";
 
 //hooks
-import useInterview from "../hooks/useInterview";
+
+import { useInterviewStore } from "../../store/interview.store";
+import Header from "../../auth/components/Header";
 
 const Interview = () => {
   const params = useParams();
   const { interviewReport, interviewReportById, pdfLoading, getPdf } =
-    useInterview();
+    useInterviewStore();
   const [activeNav, setActiveNav] = useState("technical");
 
   useEffect(() => {
-    if (params.interviewId) interviewReportById(params.interviewId);
-  }, []);
+    if (!params.interviewId) return;
+    interviewReportById(params.interviewId);
+  }, [interviewReportById, params.interviewId]);
 
   if (!interviewReport) {
     return (
@@ -48,14 +52,20 @@ const Interview = () => {
   if (pdfLoading) {
     return (
       <main className="flex-center h-screen w-full">
-        <h1>Generating Pdf</h1>
-        <p>Please wait...</p>
+        <div className="flex flex-col gap-4">
+          <AiOutlineLoading3Quarters className="animate-spin text-4xl" />
+          <h1>Generating Pdf</h1>
+          <p className="animate-pulse text-sm">Please wait...</p>
+        </div>
       </main>
     );
   }
 
   return (
-    <main className="container mx-auto mt-10 grid min-h-[90vh] grid-cols-10 rounded-lg border border-gray-800 shadow-xs shadow-gray-800">
+    <main className="container mx-auto my-20 grid min-h-[90vh] grid-cols-10 rounded-lg border border-gray-800 shadow-xs shadow-gray-800">
+      {/* header */}
+      <Header />
+
       {/* LEFT SIDE BAR */}
       <aside className="left-sidebar col-span-2 flex flex-col justify-between border-r border-gray-800 p-6 text-gray-400">
         <div>

@@ -1,3 +1,5 @@
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+
 const Button = ({
   type = "button",
   className,
@@ -14,7 +16,11 @@ const Button = ({
       disabled={loading}
     >
       {icon}
-      {loading ? "loading..." : children}
+      {loading ? (
+        <AiOutlineLoading3Quarters size={20} className="animate-spin" />
+      ) : (
+        children
+      )}
     </button>
   );
 };

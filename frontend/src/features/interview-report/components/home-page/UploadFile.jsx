@@ -1,19 +1,18 @@
 //library
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
-import useInterview from "../../hooks/useInterview";
+
+import { toast } from "react-toastify";
 
 function UploadFile({ active, setActive, file, setFile }) {
-  const { setError } = useInterview();
-
   const handleDrop = (e) => {
     e.preventDefault();
     setActive(false);
-    setError("");
+
     const file = e.dataTransfer.files[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        setError("File size should be less than 5MB");
+        toast.error("File size should be less than 5MB");
         return;
       }
       setFile(file);
@@ -29,11 +28,10 @@ function UploadFile({ active, setActive, file, setFile }) {
   };
 
   const handleFileChange = (e) => {
-    setError("");
     const file = e.target.files[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        setError("File size should be less than 5MB");
+        toast.error("File size should be less than 5MB");
         return;
       }
       setFile(file);

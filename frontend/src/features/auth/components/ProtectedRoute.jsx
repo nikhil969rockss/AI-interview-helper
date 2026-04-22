@@ -1,15 +1,31 @@
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { Navigate, useNavigate } from "react-router-dom";
+import Loading from "./Loading";
+import { useEffect } from "react";
+
+import { useAuthStore } from "../../store/auth.store";
+import Footer from "./Footer";
 
 export const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
-  if (loading)
-    return (
-      <main className="flex-center min-h-screen w-full">
-        <h1 className="text-4xl">Loading...</h1>
-      </main>
-    );
+  const { user, isCheckingAuth, loading, checkAuthUser } = useAuthStore();
+  const navigate = useNavigate();
 
-  if (!user) return <Navigate to={"/login"} />;
-  return children;
+  useEffect(() => {
+    checkAuthUser();
+  }, [checkAuthUser]);
+
+  useEffect(() => {
+    if (!user && !isCheckingAuth) {
+      navigate("/login", { replace: true });
+      return;
+    }
+  }, [user, isCheckingAuth, navigate]);
+
+  if (loading) return <Loading />;
+
+  return (
+    <div className="flex flex-col justify-between">
+      {children}
+      <Footer />
+    </div>
+  );
 };

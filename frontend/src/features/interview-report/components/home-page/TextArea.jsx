@@ -1,7 +1,7 @@
 function TextArea({ placeholder, value, onChange, name, className }) {
   return (
     <textarea
-      className={`scrollbar-none h-full w-full resize-none rounded-md border-none bg-gray-800 p-3 outline-none ${className}`}
+      className={`scrollbar-none scro h-full w-full resize-none rounded-md border-none bg-gray-800 p-3 outline-none ${className}`}
       placeholder={placeholder}
       value={value}
       onChange={onChange}
