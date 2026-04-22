@@ -59,7 +59,7 @@ export const useAuthStore = create((set, get) => ({
     set({ isCheckingAuth: true });
     try {
       const result = await getMe();
-      get().setUser(result.user || null);
+      get().setUser(result?.user || null);
     } catch (error) {
       console.log("error checking auth user", error);
     } finally {

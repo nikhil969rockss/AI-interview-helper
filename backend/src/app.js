@@ -9,7 +9,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:5173","https://ai-interview-helper-ten.vercel.app"],
+    origin: [
+      "http://localhost:5173",
+      "https://ai-interview-helper-ten.vercel.app",
+    ],
     credentials: true,
   }),
 );
@@ -23,7 +26,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/interview", interviewRouter);
 //testing route
 app.get("/test", (req, res) => {
-  res.send("Your app is runnning")
-})
+  res.send("Your app is runnning");
+});
 
 module.exports = app;

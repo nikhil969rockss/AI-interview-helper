@@ -2,6 +2,7 @@ import axios from "axios";
 
 const DEV_URL = import.meta.env.VITE_DEV_URL;
 const PROD_URL = import.meta.env.VITE_PROD_URL;
+console.log(PROD_URL);
 const api = axios.create({
   baseURL: `${PROD_URL}/api`,
   withCredentials: true,

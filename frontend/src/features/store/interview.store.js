@@ -34,7 +34,7 @@ export const useInterviewStore = create((set) => ({
 
       const response = await generateInterviewReport(formData);
 
-      if (response.interviewReport) {
+      if (response?.interviewReport) {
         set({ interviewReport: response.interviewReport });
         return response.interviewReport;
       }
@@ -52,7 +52,7 @@ export const useInterviewStore = create((set) => ({
 
     try {
       const response = await getInterviewReportById({ interviewId: id });
-      if (response.interviewReport) {
+      if (response?.interviewReport) {
         set({ interviewReport: response.interviewReport });
       }
     } catch (error) {
@@ -67,7 +67,7 @@ export const useInterviewStore = create((set) => ({
   interviewReportsByUser: async () => {
     try {
       const response = await getInterviewReports();
-      if (response.interviewReports) {
+      if (response?.interviewReports) {
         set({ interviewReports: response.interviewReports });
       }
     } catch (error) {
