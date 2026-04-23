@@ -5,7 +5,7 @@ import { FaUser } from "react-icons/fa";
 import { MdDescription } from "react-icons/md";
 import { FaInfoCircle } from "react-icons/fa";
 import { BsStars } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 //components
 import Button from "../../auth/components/Button";
@@ -28,8 +28,7 @@ function Home() {
   const [selfDescription, setSelfDescription] = useState("");
   const [showLoginButton, setShowLoginButton] = useState(false);
   const { user, handleLogout, loading } = useAuthStore();
-
-  const isUserTestUser = isUserTest(user);
+  const navigate = useNavigate();
 
   const {
     createInterviewReport,
@@ -39,7 +38,15 @@ function Home() {
     testUserDemo,
     setTestUserDemo,
   } = useInterviewStore();
-  const navigate = useNavigate();
+
+  const isUserTestUser = isUserTest(user);
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login", { replace: true });
+      return;
+    }
+  }, [navigate, user]);
 
   // to setup only one generation as a test user
   useEffect(() => {
