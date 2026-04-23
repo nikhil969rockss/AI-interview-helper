@@ -24,9 +24,16 @@ const Register = () => {
       toast.error("Please fill all fields");
       return;
     }
-    await handleRegister({ username, email, password });
-    navigate("/", { replace: true });
+    const { success, error } = await handleRegister({
+      username,
+      email,
+      password,
+    });
+    if (!success) {
+      return toast.error(error.message || "Something went wrong");
+    }
     toast.success("Register successfully");
+    navigate("/", { replace: true });
   };
 
   return (

@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { create } from "zustand";
 import { getMe, login, logout, register } from "../auth/services/auth.api";
 
@@ -19,11 +18,12 @@ export const useAuthStore = create((set, get) => ({
     get().setLoading(true);
     try {
       const data = await login({ email, password });
-      if (data?.user) get().setUser(data.user);
-      toast.success("User login successfully");
+      if (!data?.user) return { success: false, error: "Failed to login" };
+      get().setUser(data.user);
+      return { success: true, error: "" };
     } catch (error) {
       console.log(error);
-      toast.error(error.message || "Error logging user");
+      return { success: false, error: error };
     } finally {
       get().setLoading(false);
     }
@@ -33,11 +33,12 @@ export const useAuthStore = create((set, get) => ({
     get().setLoading(true);
     try {
       const data = await register({ username, email, password });
-      if (data?.user) get().setUser(data.user);
-      toast.success("User registered successfully");
+      if (!data?.user) return { success: false, error: "Failed to Register" };
+      get().setUser(data.user);
+      return { success: true, error: "" };
     } catch (error) {
       console.log(error);
-      toast.error(error.message || "Error registering user");
+      return { success: false, error: error };
     } finally {
       get().setLoading(false);
     }
