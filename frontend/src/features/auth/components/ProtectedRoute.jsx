@@ -15,7 +15,7 @@ export const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     if (!user && !isCheckingAuth) {
-      navigate("/login", { replace: true });
+      navigate("/register", { replace: true });
       return;
     }
   }, [user, isCheckingAuth, navigate]);
